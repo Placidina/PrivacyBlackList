@@ -1,0 +1,7 @@
+# Title: Pi-Hole/Groups/Kids
+#
+# ===============================================================
+
+# [Facebook]
+0.0.0.0 mqtt-mini.facebook.com
+0.0.0.0 graph.facebook.com
