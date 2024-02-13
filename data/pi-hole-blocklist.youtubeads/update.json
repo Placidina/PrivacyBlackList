@@ -1,0 +1,10 @@
+{
+    "name": "zangadoprojets",
+    "description": "In this repository you will find custom blacklists for the PiHole service. They can be used on similar services (AdGuard, Ublock).",
+    "homeurl": "https://github.com/zangadoprojets/pi-hole-blocklist",
+    "frequency": "frequently",
+    "issues": "https://github.com/zangadoprojets/pi-hole-blocklist/issues",
+    "url": "https://raw.githubusercontent.com/zangadoprojets/pi-hole-blocklist/main/youtube.txt",
+    "license": "MIT",
+    "pause": true
+}
