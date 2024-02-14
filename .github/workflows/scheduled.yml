@@ -2,7 +2,7 @@ name: Daily Blacklist Update
 
 on:
   schedule:
-    - cron: 20 15 * * *
+    - cron: 30 12 * * *
 
 jobs:
   build:
