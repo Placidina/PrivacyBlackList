@@ -12,6 +12,8 @@ lists:
     sources:
     - name: mullvad-dns-blocklists-lists-doh-gambling-hagezi-gambling
       url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/gambling/hagezi-gambling
+    - name: nethserver-dns-community-blacklist-gambling-nl.dns
+      url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/gambling-nl.dns
   privacy:
     whitelist: []
     blacklist: []
@@ -36,3 +38,11 @@ lists:
       url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/telemetry-xiaomi
     - name: mullvad-dns-blocklists-lists-doh-privacy-windows-spy-blocker-spy
       url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/windows-spy-blocker-spy
+    - name: nethserver-dns-community-blacklist-easyprivacy.dns
+      url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/easyprivacy.dns
+    - name: nethserver-dns-community-blacklist-tracking-nl.dns
+      url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/tracking-nl.dns
+    - name: nethserver-dns-community-blacklist-firstparty.dns
+      url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/firstparty.dns
+    - name: nethserver-dns-community-blacklist-quidsup.dns
+      url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/quidsup.dns
