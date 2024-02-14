@@ -1,0 +1,7 @@
+gambling:
+  whitelist: []
+  blacklist: []
+  sources:
+  - vendor: Mullvad
+    home: https://github.com/mullvad/dns-blocklists
+    url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/gambling/hagezi-gambling

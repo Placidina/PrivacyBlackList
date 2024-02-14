@@ -1,0 +1,11 @@
+{
+    "editor.formatOnSave": true,
+    "python.formatting.autopep8Args": [
+        "--ignore",
+        "E402"
+    ],
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/*.pyc": true
+    }
+}
