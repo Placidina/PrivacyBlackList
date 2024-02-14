@@ -13,13 +13,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Python, pipenv and Pipfile packages
-        uses: palewire/install-python-pipenv-pipfile@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.11'
+      
+      - name: Install pipenv
+        run: pip install pipenv
 
       - name: Install dependencies
-        run: pipenv install --deploy
+        run: pipenv install
 
       - name: Update Custom
         run: python update.py --custom
