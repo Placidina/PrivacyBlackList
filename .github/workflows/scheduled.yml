@@ -1,0 +1,29 @@
+name: Daily Blacklist Update
+
+on:
+  schedule:
+    - cron: 20 15 * * *
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Python, pipenv and Pipfile packages
+        uses: palewire/install-python-pipenv-pipfile@v3
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pipenv install --deploy
+      - name: Update Custom
+        run: python update.py --custom
+      - name: Update Lists Gambling
+        run: python update.py -m --gambling
+      - name: Update Lists Privacy
+        run: python update.py -m --privacy
+      - name: Commit and push
+        uses: devops-infra/action-commit-push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          commit_message: '[Scheduled] Update Blacklists'
