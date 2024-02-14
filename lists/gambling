@@ -1,13 +1,16 @@
 # Title: Placidina/PrivacyBlackList
 # Type: Gambling
-# 
+#
 # This hosts file is a merged collection of hosts from reputable sources,
 # with a dash of crowd sourcing via GitHub
-# 
-# Date: 14 February 2024 00:42:49 (GMT)
-# Number of unique domains: 142,008
-# 
-# Fetch the latest version of this file: https://raw.githubusercontent.com/Placidina/PrivacyBlackList/master/lists/gambling
+#
+# Date: 14 February 2024 03:10:14 (GMT)
+# Number of unique domains: 142008
+#
+# Fetch the latest version of this file:
+#   - https://raw.githubusercontent.com/Placidina/PrivacyBlackList/master/lists/gambling
+#   - https://placidina.github.io/PrivacyBlackList/lists/gambling
+#
 # Project home page: https://github.com/Placidina/PrivacyBlackList
 # Project releases: https://github.com/Placidina/PrivacyBlackList/releases
 # ===============================================================

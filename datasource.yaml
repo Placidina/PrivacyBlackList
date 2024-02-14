@@ -1,7 +1,38 @@
-gambling:
-  whitelist: []
-  blacklist: []
-  sources:
-  - vendor: Mullvad
-    home: https://github.com/mullvad/dns-blocklists
-    url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/gambling/hagezi-gambling
+whitelist:
+  - s.youtube.com
+blacklist: []
+custom:
+  pi-hole-kids-group:
+    - mqtt-mini.facebook.com
+    - graph.facebook.com
+lists:
+  gambling:
+    whitelist: []
+    blacklist: []
+    sources:
+    - name: mullvad-dns-blocklists-lists-doh-gambling-hagezi-gambling
+      url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/gambling/hagezi-gambling
+  privacy:
+    whitelist: []
+    blacklist: []
+    sources:
+    - name: mullvad-dns-blocklists-lists-doh-privacy-firebog-easylist-privacy
+      url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/firebog-easylist-privacy
+    - name: mullvad-dns-blocklists-lists-doh-privacy-mullvad-tracker-blocklist
+      url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/mullvad-tracker-blocklist
+    - name: mullvad-dns-blocklists-lists-doh-privacy-telemetry-alexa
+      url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/telemetry-alexa
+    - name: mullvad-dns-blocklists-lists-doh-privacy-telemetry-apple
+      url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/telemetry-apple
+    - name: mullvad-dns-blocklists-lists-doh-privacy-telemetry-huawei
+      url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/telemetry-huawei
+    - name: mullvad-dns-blocklists-lists-doh-privacy-telemetry-samsung
+      url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/telemetry-samsung
+    - name: mullvad-dns-blocklists-lists-doh-privacy-telemetry-sonos
+      url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/telemetry-sonos
+    - name: mullvad-dns-blocklists-lists-doh-privacy-telemetry-windows
+      url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/telemetry-windows
+    - name: mullvad-dns-blocklists-lists-doh-privacy-telemetry-xiaomi
+      url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/telemetry-xiaomi
+    - name: mullvad-dns-blocklists-lists-doh-privacy-windows-spy-blocker-spy
+      url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/windows-spy-blocker-spy

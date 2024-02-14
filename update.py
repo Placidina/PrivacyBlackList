@@ -112,6 +112,20 @@ def parse_arguments():
         default=False,
         help="Create a list to exclude domains related to gambling",
     )
+    blacklist_group.add_argument(
+        "--privacy",
+        dest="privacy",
+        action="store_true",
+        default=False,
+        help="Create a list to exclude domains related to privacy",
+    )
+    blacklist_group.add_argument(
+        "--custom",
+        dest="custom",
+        action="store_true",
+        default=False,
+        help="Create a list to exclude custom-related domains",
+    )
 
     parser.add_argument(
         "-o",
@@ -182,8 +196,16 @@ def remove_duplicates_and_whitelisted(merged_file, options, datasource, output=N
         blacklist = output
 
     rules = 0
+    whitelist = []
     merged_file.seek(0)
-    whitelist = datasource[options["blacklist"]]["whitelist"]
+
+    if not options["custom"]:
+        whitelist = list(
+            set(
+                datasource["whitelist"]
+                + datasource["lists"][options["blacklist"]]["whitelist"]
+            )
+        )
 
     for line in merged_file.readlines():
         write = True
@@ -316,7 +338,14 @@ def create_initial_file(src_dir, options, datasource):
             with open(source, "r", encoding=ENCODING) as f:
                 merged_file.write(f.read().encode(ENCODING))
 
-        blacklist_data = "\n".join(datasource[options["blacklist"]]["blacklist"])
+        blacklist_data = "\n".join(
+            list(
+                set(
+                    datasource["blacklist"]
+                    + datasource["lists"][options["blacklist"]]["blacklist"]
+                )
+            )
+        )
         merged_file.write(blacklist_data.encode(ENCODING))
 
         merged_file.seek(0)
@@ -368,36 +397,60 @@ def reduce_file_size(options, input_file, output_file):
 
 
 def write_header_info(blacklist_file, rules_count, options):
-    """Write the header information into the newly-created hosts file."""
+    """
+    Write the header information into the newly-created hosts file.
+    """
 
     blacklist_file.seek(0)
     content = blacklist_file.read()
     blacklist_file.seek(0)
 
-    header_info = """\
+    header_info = f"""\
 # Title: Placidina/PrivacyBlackList
-# Type: {}
+# Type: {options['blacklist'].title()}
 #
 # This hosts file is a merged collection of hosts from reputable sources,
 # with a dash of crowd sourcing via GitHub
 #
-# Date: {}
-# Number of unique domains: {:,}
+# Date: {time.strftime('%d %B %Y %H:%M:%S (%Z)', time.gmtime())}
+# Number of unique domains: {rules_count}
 #
-# Fetch the latest version of this file: https://raw.githubusercontent.com/Placidina/PrivacyBlackList/master/{}/{}
+# Fetch the latest version of this file:
+#   - https://raw.githubusercontent.com/Placidina/PrivacyBlackList/master/{options['output']}/{options['blacklist']}
+#   - https://placidina.github.io/PrivacyBlackList/{options['output']}/{options['blacklist']}
+#
 # Project home page: https://github.com/Placidina/PrivacyBlackList
 # Project releases: https://github.com/Placidina/PrivacyBlackList/releases
 # ===============================================================
-""".format(
-        options["blacklist"].title(),
-        time.strftime("%d %B %Y %H:%M:%S (%Z)", time.gmtime()),
-        rules_count,
-        options["output"],
-        options["blacklist"],
-    )
+"""
 
     blacklist_file.write(header_info.encode("UTF-8"))
     blacklist_file.write(content)
+
+
+def write_custom_blacklist(log, options, datasource):
+    """
+    Create a custo blacklist.
+    """
+
+    for key in datasource["custom"].keys():
+        log.info(f"Updating custom blacklist {key}")
+        options["blacklist"] = f"custom-{key}"
+
+        with tempfile.NamedTemporaryFile(delete=False) as file:
+            content = "\n{}".format("\n".join(datasource["custom"][key]))
+            file.write(content.encode(ENCODING))
+
+            rules, blacklist = remove_duplicates_and_whitelisted(
+                file, options, datasource
+            )
+
+            write_header_info(blacklist, rules, options)
+            blacklist.close()
+
+            log.success(
+                f"Success! The hosts file has been saved in folder {os.path.join(options['output_path'], options['blacklist'])}\nIt contains {rules:,} unique entries."
+            )
 
 
 if __name__ == "__main__":
@@ -413,48 +466,50 @@ if __name__ == "__main__":
 
     if options["gambling"]:
         options["blacklist"] = "gambling"
-
-    source_data_path = os.path.join(BASEDIR_PATH, "data", options["blacklist"])
-    if not os.path.exists(source_data_path):
-        os.makedirs(source_data_path)
+    elif options["privacy"]:
+        options["blacklist"] = "privacy"
 
     options["output_path"] = os.path.join(BASEDIR_PATH, options["output"])
     if not os.path.exists(options["output_path"]):
         os.makedirs(options["output_path"])
 
-    for source in datasource[options["blacklist"]]["sources"]:
-        log.info(
-            "Updating {} from vendor {}".format(options["blacklist"], source["vendor"])
-        )
-        content = download(source["url"]).replace("\r", "")
-
-        hosts_file_path = os.path.join(source_data_path, source["vendor"].lower())
-        with open(hosts_file_path, "wb") as data:
-            data.write(content.encode("UTF-8"))
-
-    merged = create_initial_file(source_data_path, options, datasource)
-
-    if options["minimise"]:
-        minimised = tempfile.NamedTemporaryFile()
-        blacklist = open(
-            os.path.join(options["output_path"], options["blacklist"]), "w+b"
-        )
-
-        rules = remove_duplicates_and_whitelisted(
-            merged, options, datasource, minimised
-        )
-        reduce_file_size(options, minimised, blacklist)
+    if options["custom"]:
+        write_custom_blacklist(log, options, datasource)
     else:
-        rules, blacklist = remove_duplicates_and_whitelisted(
-            merged, options, datasource
+        source_data_path = os.path.join(BASEDIR_PATH, "data", options["blacklist"])
+        if not os.path.exists(source_data_path):
+            os.makedirs(source_data_path)
+
+        for source in datasource["lists"][options["blacklist"]]["sources"]:
+            log.info("Updating {} from {}".format(options["blacklist"], source["name"]))
+            content = download(source["url"]).replace("\r", "")
+
+            hosts_file_path = os.path.join(source_data_path, source["name"].lower())
+            with open(hosts_file_path, "wb") as data:
+                data.write(content.encode("UTF-8"))
+
+        merged_file = create_initial_file(source_data_path, options, datasource)
+
+        if options["minimise"]:
+            minimised = tempfile.NamedTemporaryFile()
+            blacklist = open(
+                os.path.join(options["output_path"], options["blacklist"]), "w+b"
+            )
+
+            rules = remove_duplicates_and_whitelisted(
+                merged_file, options, datasource, minimised
+            )
+            reduce_file_size(options, minimised, blacklist)
+        else:
+            rules, blacklist = remove_duplicates_and_whitelisted(
+                merged_file, options, datasource
+            )
+
+        write_header_info(blacklist, rules, options)
+        blacklist.close()
+
+        log.success(
+            "Success! The hosts file has been saved in folder {}\nIt contains {:,} unique entries.".format(
+                os.path.join(options["output_path"], options["blacklist"]), rules
+            )
         )
-
-    write_header_info(blacklist, rules, options)
-
-    blacklist.close()
-
-    log.success(
-        "Success! The hosts file has been saved in folder {}\nIt contains {:,} unique entries.".format(
-            os.path.join(options["output_path"], options["blacklist"]), rules
-        )
-    )
