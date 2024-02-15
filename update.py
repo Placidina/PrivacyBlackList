@@ -106,6 +106,13 @@ def parse_arguments():
 
     blacklist_group = parser.add_mutually_exclusive_group(required=True)
     blacklist_group.add_argument(
+        "--custom",
+        dest="custom",
+        action="store_true",
+        default=False,
+        help="Create a list to exclude custom-related domains",
+    )
+    blacklist_group.add_argument(
         "--gambling",
         dest="gambling",
         action="store_true",
@@ -120,11 +127,11 @@ def parse_arguments():
         help="Create a list to exclude domains related to privacy",
     )
     blacklist_group.add_argument(
-        "--custom",
-        dest="custom",
+        "--adblock",
+        dest="adblock",
         action="store_true",
         default=False,
-        help="Create a list to exclude custom-related domains",
+        help="Create a list to exclude domains related to ads",
     )
 
     parser.add_argument(
@@ -468,6 +475,8 @@ if __name__ == "__main__":
         options["blacklist"] = "gambling"
     elif options["privacy"]:
         options["blacklist"] = "privacy"
+    elif options["adblock"]:
+        options["blacklist"] = "adblock"
 
     options["output_path"] = os.path.join(BASEDIR_PATH, options["output"])
     if not os.path.exists(options["output_path"]):

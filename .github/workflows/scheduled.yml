@@ -30,6 +30,9 @@ jobs:
       - name: Update Lists Privacy
         run: python update.py -m --privacy
 
+      - name: Update Lists ADBlock
+        run: python update.py -m --adblock
+
       - name: Commit and push
         uses: devops-infra/action-commit-push@master
         with:

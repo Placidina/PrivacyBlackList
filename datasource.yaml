@@ -46,3 +46,25 @@ lists:
       url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/firstparty.dns
     - name: nethserver-dns-community-blacklist-quidsup.dns
       url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/quidsup.dns
+  adblock:
+    whitelist: []
+    blacklist: []
+    sources:
+    - name: mullvad-dns-blocklists-lists-doh-adblock-AdguardDNS
+      url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/adblock/AdguardDNS
+    - name: mullvad-dns-blocklists-lists-doh-adblock-frellwits-swedish-hosts-file
+      url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/adblock/frellwits-swedish-hosts-file
+    - name: nethserver-dns-community-blacklist-adguarddns.dns
+      url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/adguarddns.dns
+    - name: nethserver-dns-community-blacklist-admiral.dns
+      url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/admiral.dns
+    - name: nethserver-dns-community-blacklist-ads-nl.dns
+      url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/ads-nl.dns
+    - name: nethserver-dns-community-blacklist-disconnectme.dns
+      url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/disconnectme.dns
+    - name: nethserver-dns-community-blacklist-easylist.dns
+      url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/easylist.dns
+    - name: nethserver-dns-community-blacklist-firebog-ads.dns
+      url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/firebog-ads.dns
+    - name: nethserver-dns-community-blacklist-pgl.dns
+      url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/pgl.dns
