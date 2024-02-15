@@ -214,7 +214,7 @@ def remove_duplicates_and_whitelisted(merged_file, options, datasource, output=N
             )
         )
 
-    for line in merged_file.readlines():
+    for line in set(merged_file.readlines()):
         write = True
 
         line = line.decode(ENCODING).replace("\t+", " ").rstrip(" .")
