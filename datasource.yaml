@@ -1,5 +1,6 @@
 whitelist:
   - s.youtube.com
+  - cdn.shortpixel.ai
 blacklist: []
 custom:
   pi-hole-kids-group:
