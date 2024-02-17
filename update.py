@@ -133,6 +133,13 @@ def parse_arguments():
         default=False,
         help="Create a list to exclude domains related to ads",
     )
+    blacklist_group.add_argument(
+        "--mixed",
+        dest="mixed",
+        action="store_true",
+        default=False,
+        help="Create a list to exclude domains related to ads",
+    )
 
     parser.add_argument(
         "-o",
@@ -202,7 +209,6 @@ def remove_duplicates_and_whitelisted(merged_file, options, datasource, output=N
     else:
         blacklist = output
 
-    rules = 0
     whitelist = []
     merged_file.seek(0)
 
@@ -214,7 +220,7 @@ def remove_duplicates_and_whitelisted(merged_file, options, datasource, output=N
             )
         )
 
-    for line in set(merged_file.readlines()):
+    for line in merged_file.readlines():
         write = True
 
         line = line.decode(ENCODING).replace("\t+", " ").rstrip(" .")
@@ -238,14 +244,13 @@ def remove_duplicates_and_whitelisted(merged_file, options, datasource, output=N
 
         if normalized_rule and write:
             blacklist.write(normalized_rule.encode(ENCODING))
-            rules += 1
 
     merged_file.close()
 
     if output is None:
-        return rules, blacklist
+        return blacklist
 
-    return rules
+    return None
 
 
 def normalize_rule(rule, options):
@@ -445,12 +450,11 @@ def write_custom_blacklist(log, options, datasource):
         options["blacklist"] = f"custom-{key}"
 
         with tempfile.NamedTemporaryFile(delete=False) as file:
+            rules = len(datasource["custom"][key])
             content = "\n{}".format("\n".join(datasource["custom"][key]))
-            file.write(content.encode(ENCODING))
 
-            rules, blacklist = remove_duplicates_and_whitelisted(
-                file, options, datasource
-            )
+            file.write(content.encode(ENCODING))
+            blacklist = remove_duplicates_and_whitelisted(file, options, datasource)
 
             write_header_info(blacklist, rules, options)
             blacklist.close()
@@ -477,6 +481,8 @@ if __name__ == "__main__":
         options["blacklist"] = "privacy"
     elif options["adblock"]:
         options["blacklist"] = "adblock"
+    elif options["mixed"]:
+        options["blacklist"] = "mixed"
 
     options["output_path"] = os.path.join(BASEDIR_PATH, options["output"])
     if not os.path.exists(options["output_path"]):
@@ -505,20 +511,23 @@ if __name__ == "__main__":
                 os.path.join(options["output_path"], options["blacklist"]), "w+b"
             )
 
-            rules = remove_duplicates_and_whitelisted(
+            remove_duplicates_and_whitelisted(
                 merged_file, options, datasource, minimised
             )
             reduce_file_size(options, minimised, blacklist)
         else:
-            rules, blacklist = remove_duplicates_and_whitelisted(
+            blacklist = remove_duplicates_and_whitelisted(
                 merged_file, options, datasource
             )
 
-        write_header_info(blacklist, rules, options)
+        blacklist.seek(0)
+        lines = set(blacklist.readlines())
+        blacklist.writelines(lines)
+        write_header_info(blacklist, len(lines), options)
         blacklist.close()
 
         log.success(
             "Success! The hosts file has been saved in folder {}\nIt contains {:,} unique entries.".format(
-                os.path.join(options["output_path"], options["blacklist"]), rules
+                os.path.join(options["output_path"], options["blacklist"]), len(lines)
             )
         )
