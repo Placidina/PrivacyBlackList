@@ -9,6 +9,7 @@ rules:
   whitelist:
     - s.youtube.com
     - cdn.shortpixel.ai
+    - web.whatsapp.com
   blacklist: []
   custom:
     pi-hole-kids-group:
