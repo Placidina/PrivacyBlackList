@@ -23,7 +23,42 @@ rules:
       sources: []
     gambling:
       whitelist: []
-      blacklist: []
+      blacklist:
+      - 006.game
+      - www.006.game
+      - novaslotsbet.com
+      - m.novaslotsbet.com
+      - 1822br.com
+      - www.1822br.com
+      - www.voz777.cc
+      - k6bet6.com
+      - www.k6bet6.com
+      - 5588bet3.com
+      - www.5588bet3.com
+      - www.uu7.bet
+      - m.uu7.bet
+      - www.8899bet.cc
+      - brazilbet777.com
+      - www.brazilbet777.com
+      - m.phoenix777slots.com
+      - ds.phoenix777slots.com
+      - mido777.com
+      - www.mido777.com
+      - 60game.bet
+      - www.60game.bet
+      - m.corinthians777.com
+      - www.911jogo.vip
+      - pppkf.com
+      - www.pppkf.com
+      - www.euzzo.com
+      - euzzo.com
+      - fb588.com
+      - www.fb588.com
+      - 777sug.win
+      - www.777sug.win
+      - www.brgames777.com
+      - m.brgames777.com
+      - brgames777.com
       sources:
       - name: mullvad-dns-blocklists-lists-doh-gambling-hagezi-gambling
         url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/gambling/hagezi-gambling
