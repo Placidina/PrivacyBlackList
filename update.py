@@ -386,7 +386,7 @@ if __name__ == "__main__":
                     rules.append(rule)
 
             blacklist.write("".join(rules).encode(ENCODING))
-            write_header(blacklist, f"{options['output']}/custom/{key}", len(rules))
+            write_header(blacklist, f"custom/{key}", len(rules))
 
         log.success(
             f"Custom rules for {key} updated with {len(rules):,} unique domains"
@@ -442,9 +442,7 @@ if __name__ == "__main__":
                 blacklist.writelines(lines)
                 total_unique_domains = len(lines)
 
-                write_header(
-                    blacklist, f"{options['output']}/lists/{key}", total_unique_domains
-                )
+                write_header(blacklist, f"lists/{key}", total_unique_domains)
 
         log.success(
             f"{key.title()} updated with {total_unique_domains:,} unique domains"
