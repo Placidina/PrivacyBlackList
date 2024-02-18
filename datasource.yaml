@@ -1,105 +1,36 @@
 target: '0.0.0.0'
-deploy:
-  ssh:
-    username: raspberry
-    server: '192.168.1.2'
-    key_filename: /home/alan/.ssh/raspberry.pem
-  dest: /opt/privacyblacklist/rules
 rules:
   whitelist:
     - s.youtube.com
     - cdn.shortpixel.ai
-    - web.whatsapp.com
   blacklist: []
   custom:
     pi-hole-kids-group:
       - mqtt-mini.facebook.com
       - graph.facebook.com
   lists:
-    mixed:
+    adblock:
       whitelist: []
       blacklist: []
       sources:
-      - name: nethserver-dns-community-blacklist-abuse-nl.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/abuse-nl.dns
-      - name: nethserver-dns-community-blacklist-abuse_ch.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/abuse_ch.dns
-      - name: nethserver-dns-community-blacklist-adaway.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/adaway.dns
-      - name: nethserver-dns-community-blacklist-adguarddns.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/adguarddns.dns
-      - name: nethserver-dns-community-blacklist-admiral.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/admiral.dns
-      - name: nethserver-dns-community-blacklist-ads-nl.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/ads-nl.dns
-      - name: nethserver-dns-community-blacklist-anudeepnd.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/anudeepnd.dns
-      - name: nethserver-dns-community-blacklist-bigdargon.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/bigdargon.dns
-      - name: nethserver-dns-community-blacklist-crypto-nl.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/crypto-nl.dns
-      - name: nethserver-dns-community-blacklist-digitalside.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/digitalside.dns
-      - name: nethserver-dns-community-blacklist-disconnectme.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/disconnectme.dns
-      - name: nethserver-dns-community-blacklist-drugs-nl.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/drugs-nl.dns
-      - name: nethserver-dns-community-blacklist-easylist.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/easylist.dns
-      - name: nethserver-dns-community-blacklist-easyprivacy.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/easyprivacy.dns
-      - name: nethserver-dns-community-blacklist-facebook-nl.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/facebook-nl.dns
-      - name: nethserver-dns-community-blacklist-fademind.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/fademind.dns
-      - name: nethserver-dns-community-blacklist-firebog-ads.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/firebog-ads.dns
-      - name: nethserver-dns-community-blacklist-firebog-crypto.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/firebog-crypto.dns
-      - name: nethserver-dns-community-blacklist-firebog-malware.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/firebog-malware.dns
-      - name: nethserver-dns-community-blacklist-firstparty.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/firstparty.dns
-      - name: nethserver-dns-community-blacklist-fraud-nl.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/fraud-nl.dns
-      - name: nethserver-dns-community-blacklist-gambling-nl.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/gambling-nl.dns
-      - name: nethserver-dns-community-blacklist-malware-nl.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/malware-nl.dns
-      - name: nethserver-dns-community-blacklist-mvps.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/mvps.dns
-      - name: nethserver-dns-community-blacklist-pgl.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/pgl.dns
-      - name: nethserver-dns-community-blacklist-phising-nl.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/phising-nl.dns
-      - name: nethserver-dns-community-blacklist-phisingarmy.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/phisingarmy.dns
-      - name: nethserver-dns-community-blacklist-piracy-nl.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/piracy-nl.dns
-      - name: nethserver-dns-community-blacklist-quidsup.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/quidsup.dns
-      - name: nethserver-dns-community-blacklist-ransomware-nl.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/ransomware-nl.dns
-      - name: nethserver-dns-community-blacklist-redirect-nl.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/redirect-nl.dns
-      - name: nethserver-dns-community-blacklist-rooneymcnibnug.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/rooneymcnibnug.dns
-      - name: nethserver-dns-community-blacklist-scam-nl.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/scam-nl.dns
-      - name: nethserver-dns-community-blacklist-stevenblack.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/stevenblack.dns
-      - name: nethserver-dns-community-blacklist-tracking-nl.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/tracking-nl.dns
-      - name: nethserver-dns-community-blacklist-ultimate.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/ultimate.dns
-      - name: nethserver-dns-community-blacklist-wally3k.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/wally3k.dns
-      - name: nethserver-dns-community-blacklist-adguarddns.dns
-        url: https://raw.githubusercontent.com/NethServer/dns-community-blacklist/master/adguarddns.dns
+      - name: mullvad-dns-blocklists-lists-doh-adblock-adguarddns
+        url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/adblock/AdguardDNS
       - name: mullvad-dns-blocklists-lists-doh-adblock-frellwits-swedish-hosts-file
         url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/adblock/frellwits-swedish-hosts-file
+    adult:
+      whitelist: []
+      blacklist: []
+      sources: []
+    gambling:
+      whitelist: []
+      blacklist: []
+      sources:
       - name: mullvad-dns-blocklists-lists-doh-gambling-hagezi-gambling
         url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/gambling/hagezi-gambling
+    privacy:
+      whitelist: []
+      blacklist: []
+      sources:
       - name: mullvad-dns-blocklists-lists-doh-privacy-firebog-easylist-privacy
         url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/firebog-easylist-privacy
       - name: mullvad-dns-blocklists-lists-doh-privacy-mullvad-tracker-blocklist
@@ -120,3 +51,9 @@ rules:
         url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/telemetry-xiaomi
       - name: mullvad-dns-blocklists-lists-doh-privacy-windows-spy-blocker-spy
         url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/windows-spy-blocker-spy
+    social:
+      whitelist: []
+      blacklist: []
+      sources:
+      - name: mullvad-dns-blocklists-lists-doh-social-mullvad-social-blocklist
+        url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/social/mullvad-social-blocklist

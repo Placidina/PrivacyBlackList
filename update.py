@@ -11,8 +11,6 @@ import time
 import requests
 
 from glob import glob
-from paramiko import SSHClient, AutoAddPolicy
-from scp import SCPClient
 
 
 # Detecting Python 3 for version-dependent implementations
@@ -78,54 +76,6 @@ class Logging:
         print(self._colorize(message, self.COLORS.PROMPT))
 
 
-class SSHDeploy:
-    def __init__(
-        self,
-        username: str,
-        server: str,
-        key_filename: str = None,
-        password: str = None,
-        port: int = 22,
-        path: str = None,
-    ) -> None:
-        self.username = username
-        self.server = server
-        self.password = password
-        self.key_filename = key_filename
-        self.port = port
-        self.path = path
-
-        self._ssh_client = self._create_ssh_client()
-
-    def _create_ssh_client(self):
-        client = SSHClient()
-        client.load_system_host_keys()
-        client.set_missing_host_key_policy(AutoAddPolicy())
-
-        client.connect(
-            self.server,
-            self.port,
-            self.username,
-            self.password,
-            key_filename=self.key_filename,
-        )
-
-        return client
-
-    def run(self, src: str, dest: str, recursive: bool = False):
-        destination: str = dest
-        if self.path is not None:
-            destination = f"{self.path}/{dest}"
-
-        with SCPClient(self._ssh_client.get_transport()) as scp:
-            scp.put(src, destination, recursive)
-
-        return f"file://{destination}"
-
-    def done(self):
-        self._ssh_client.close()
-
-
 def parse_arguments():
     """
     Parse command-line arguments.
@@ -143,18 +93,10 @@ def parse_arguments():
         help="The datasource collection to create blacklist",
     )
     parser.add_argument(
-        "-m",
-        "--minimise",
-        dest="minimise",
-        default=False,
-        action="store_true",
-        help="Minimise the hosts file ignoring non-necessary lines (empty lines and comments)",
-    )
-    parser.add_argument(
         "-o",
         "--output",
         dest="output",
-        default="lists",
+        default="rules",
         help="Output for generated hosts file",
     )
 
@@ -206,29 +148,20 @@ def download(url, params=None, **kwargs):
     return "\n".join([domain_to_idna(line) for line in req.text.split("\n")])
 
 
-def remove_duplicates_and_whitelisted(
-    merged, target: str, whitelist: list = None, output=None
-):
+def remove_duplicates_and_whitelisted(src, dest, target: str, whitelist: list = []):
     """
     Remove duplicates and hosts that are whitelisted.
     """
 
-    if output is None:
-        blacklist = open(
-            os.path.join(options["output_path"], options["blacklist"]), "w+b"
-        )
-    else:
-        blacklist = output
+    src.seek(0)
 
-    merged.seek(0)
-
-    for line in merged.readlines():
+    for line in src.readlines():
         write = True
 
         line = line.decode(ENCODING).replace("\t+", " ").rstrip(" .")
 
         if line.startswith("#") or not line.strip():
-            blacklist.write(line.encode(ENCODING))
+            dest.write(line.encode(ENCODING))
             continue
 
         if "::1" in line:
@@ -245,14 +178,10 @@ def remove_duplicates_and_whitelisted(
                 break
 
         if normalized and write:
-            blacklist.write(normalized.encode(ENCODING))
+            dest.write(normalized.encode(ENCODING))
 
-    merged.close()
-
-    if output is None:
-        return blacklist
-
-    return None
+    src.close()
+    return dest
 
 
 def create_domain_rule(domain: str, target: str = None):
@@ -336,7 +265,7 @@ def create_domain_rule(domain: str, target: str = None):
     return belch_unwanted(rule)
 
 
-def create_initial_file(src, blacklist: str = None):
+def create_initial_file(src, blacklist: list = []):
     """
     Initialize the file by merging all host files and adding the blacklist data.
     """
@@ -349,7 +278,7 @@ def create_initial_file(src, blacklist: str = None):
                 merged.write(f.read().encode(ENCODING))
 
         if blacklist is not None:
-            merged.write(blacklist.encode(ENCODING))
+            merged.write("".join(blacklist).encode(ENCODING))
 
         merged.seek(0)
         return merged
@@ -399,17 +328,15 @@ def reduce_file_size(target, src, dest):
     for line in lines:
         dest.write(line.encode("UTF-8"))
 
-    src.close()
 
-
-def write_header(blacklist, rules):
+def write_header(file, relative_path: str, total_unique_domains: int):
     """
     Write the header information into the newly-created hosts file.
     """
 
-    blacklist.seek(0)
-    content = blacklist.read()
-    blacklist.seek(0)
+    file.seek(0)
+    content = file.read()
+    file.seek(0)
 
     header = f"""\
 # Title: Placidina/PrivacyBlackList
@@ -418,76 +345,52 @@ def write_header(blacklist, rules):
 # with a dash of crowd sourcing via GitHub
 #
 # Date: {time.strftime('%d %B %Y %H:%M:%S (%Z)', time.gmtime())}
-# Number of unique domains: {rules}
+# Number of unique domains: {total_unique_domains}
+#
+# Fetch the latest version of this file:
+#   - https://raw.githubusercontent.com/Placidina/PrivacyBlackList/master/{relative_path}
+#   - https://placidina.github.io/PrivacyBlackList/{relative_path}
 #
 # Project home page: https://github.com/Placidina/PrivacyBlackList
 # Project releases: https://github.com/Placidina/PrivacyBlackList/releases
 # ===============================================================
 """
 
-    blacklist.write(header.encode("UTF-8"))
-    blacklist.write(content)
-
-
-def write_custom_blacklist(log, options, datasource):
-    """
-    Create a custo blacklist.
-    """
-
-    for key in datasource["custom"].keys():
-        log.info(f"Updating custom blacklist {key}")
-        options["blacklist"] = f"custom-{key}"
-
-        with tempfile.NamedTemporaryFile(delete=False) as file:
-            rules = len(datasource["custom"][key])
-            content = "\n{}".format("\n".join(datasource["custom"][key]))
-
-            file.write(content.encode(ENCODING))
-            blacklist = remove_duplicates_and_whitelisted(file, options, datasource)
-
-            write_header_info(blacklist, rules, options)
-            blacklist.close()
-
-            log.success(
-                f"Success! The hosts file has been saved in folder {os.path.join(options['output_path'], options['blacklist'])}\nIt contains {rules:,} unique entries."
-            )
+    file.write(header.encode("UTF-8"))
+    file.write(content)
 
 
 if __name__ == "__main__":
     log = Logging()
     options = parse_arguments()
 
-    if not os.path.exists(options["output"]):
-        os.makedirs(options["output"])
+    if not os.path.exists(os.path.join(BASEDIR_PATH, options["output"], "custom")):
+        os.makedirs(os.path.join(BASEDIR_PATH, options["output"], "custom"))
+
+    if not os.path.exists(os.path.join(BASEDIR_PATH, options["output"], "lists")):
+        os.makedirs(os.path.join(BASEDIR_PATH, options["output"], "lists"))
 
     with open(options["datasource"], "r") as file:
         datasource = yaml.safe_load(file)
 
-    deploy = SSHDeploy(
-        datasource["deploy"]["ssh"]["username"],
-        datasource["deploy"]["ssh"]["server"],
-        datasource["deploy"]["ssh"]["key_filename"],
-        path=datasource["deploy"]["dest"],
-    )
-
     for key in datasource["rules"]["custom"].keys():
         log.info(f"Updating {key} custom rule")
 
-        count = 0
-        blacklist = os.path.join(BASEDIR_PATH, options["output"], f"custom-{key}")
-        file = open(blacklist, "w+b")
+        rules = []
+        with open(
+            os.path.join(BASEDIR_PATH, options["output"], "custom", key), "w+b"
+        ) as blacklist:
+            for domain in datasource["rules"]["custom"][key]:
+                hostname, rule = create_domain_rule(domain, datasource["target"])
+                if rule is not None:
+                    rules.append(rule)
 
-        for domain in datasource["rules"]["custom"][key]:
-            hostname, rule = create_domain_rule(domain, datasource["target"])
-            if rule is not None:
-                count += 1
-                file.write(rule.encode(ENCODING))
+            blacklist.write("".join(rules).encode(ENCODING))
+            write_header(blacklist, f"{options['output']}/custom/{key}", len(rules))
 
-        write_header(file, count)
-        file.close()
-
-        remote = deploy.run(blacklist, f"custom-{key}")
-        log.success(f"Custom rules {key} ({count:,} domains): {remote}")
+        log.success(
+            f"Custom rules for {key} updated with {len(rules):,} unique domains"
+        )
 
     for key in datasource["rules"]["lists"].keys():
         log.info(f"Updating {key.title()} ...")
@@ -503,61 +406,46 @@ if __name__ == "__main__":
             with open(
                 os.path.join(BASEDIR_PATH, "data", key, source["name"].lower()), "wb"
             ) as file:
-                file.write(content.encode("UTF-8"))
+                file.write(content.encode(ENCODING))
 
-        blacklist = os.path.join(BASEDIR_PATH, options["output"], key)
-        merged = create_initial_file(
-            os.path.join(BASEDIR_PATH, "data", key),
-            "\n".join(
-                list(
-                    set(
-                        datasource["rules"]["blacklist"]
-                        + datasource["rules"]["lists"][key]["blacklist"]
-                    )
-                )
-            ),
+        blacklist = list(
+            set(
+                datasource["rules"]["blacklist"]
+                + datasource["rules"]["lists"][key]["blacklist"]
+            )
         )
 
-        if options["minimise"]:
-            file = open(blacklist, "w+b")
-            minimised = tempfile.NamedTemporaryFile()
+        whitelist = list(
+            set(
+                datasource["rules"]["whitelist"]
+                + datasource["rules"]["lists"][key]["whitelist"]
+            )
+        )
 
+        total_unique_domains = 0
+        merged = create_initial_file(os.path.join(BASEDIR_PATH, "data", key), blacklist)
+
+        with tempfile.NamedTemporaryFile(delete=False) as minimised:
             remove_duplicates_and_whitelisted(
-                merged,
-                datasource["target"],
-                list(
-                    set(
-                        datasource["rules"]["whitelist"]
-                        + datasource["rules"]["lists"][key]["whitelist"]
-                    )
-                ),
-                minimised,
+                merged, minimised, datasource["target"], whitelist
             )
 
-            reduce_file_size(datasource["target"], minimised, file)
-        else:
-            file = remove_duplicates_and_whitelisted(
-                merged,
-                datasource["target"],
-                list(
-                    set(
-                        datasource["rules"]["whitelist"]
-                        + datasource["rules"]["lists"][key]["whitelist"]
-                    )
-                ),
-            )
+            with open(
+                os.path.join(BASEDIR_PATH, options["output"], "lists", key), "w+b"
+            ) as blacklist:
+                reduce_file_size(datasource["target"], minimised, blacklist)
 
-        file.seek(0)
+                blacklist.seek(0)
+                lines = set(blacklist.readlines())
+                blacklist.seek(0)
 
-        lines = set(file.readlines())
-        count = len(lines)
+                blacklist.writelines(lines)
+                total_unique_domains = len(lines)
 
-        file.writelines(lines)
-        write_header(file, count)
+                write_header(
+                    blacklist, f"{options['output']}/lists/{key}", total_unique_domains
+                )
 
-        file.close()
-
-        remote = deploy.run(blacklist, key)
-        log.success(f"Rule {key.title()} ({count:,} domains): {remote}")
-
-    deploy.done()
+        log.success(
+            f"{key.title()} updated with {total_unique_domains:,} unique domains"
+        )
