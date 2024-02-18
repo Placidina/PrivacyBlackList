@@ -24,8 +24,16 @@ jobs:
       - name: Update BlackLists
         run: python update.py
 
-      - name: Commit and push
+      - name: Push Rules
         uses: devops-infra/action-commit-push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           commit_message: '[Scheduled] Update Blacklists'
+
+      - name: GH Pages Deploy
+        uses: nxtlvlsoftware/git-subtree-action@1.1
+        with:
+          repo: placidina/PrivacyBlackList
+          path: rules
+          deploy_key: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
