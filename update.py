@@ -347,13 +347,11 @@ def write_header(file, relative_path: str, total_unique_domains: int):
 # Date: {time.strftime('%d %B %Y %H:%M:%S (%Z)', time.gmtime())}
 # Number of unique domains: {total_unique_domains}
 #
-# Fetch the latest version of this file:
-#   - https://raw.githubusercontent.com/Placidina/PrivacyBlackList/master/{relative_path}
-#   - https://placidina.github.io/PrivacyBlackList/{relative_path}
+# Fetch the latest version of this file: https://placidina.github.io/PrivacyBlackList/{relative_path}
 #
 # Project home page: https://github.com/Placidina/PrivacyBlackList
 # Project releases: https://github.com/Placidina/PrivacyBlackList/releases
-# ===============================================================
+# ===============================================================\n
 """
 
     file.write(header.encode("UTF-8"))
