@@ -3,12 +3,12 @@
 # This hosts file is a merged collection of hosts from reputable sources,
 # with a dash of crowd sourcing via GitHub
 #
-# Date: 18 February 2024 04:19:25 (GMT)
+# Date: 18 February 2024 04:27:40 (GMT)
 # Number of unique domains: 2
 #
 # Fetch the latest version of this file:
-#   - https://raw.githubusercontent.com/Placidina/PrivacyBlackList/master/rules/custom/pi-hole-kids-group
-#   - https://placidina.github.io/PrivacyBlackList/rules/custom/pi-hole-kids-group
+#   - https://raw.githubusercontent.com/Placidina/PrivacyBlackList/master/custom/pi-hole-kids-group
+#   - https://placidina.github.io/PrivacyBlackList/custom/pi-hole-kids-group
 #
 # Project home page: https://github.com/Placidina/PrivacyBlackList
 # Project releases: https://github.com/Placidina/PrivacyBlackList/releases
