@@ -25,40 +25,52 @@ rules:
       whitelist: []
       blacklist:
       - 006.game
-      - www.006.game
-      - novaslotsbet.com
-      - m.novaslotsbet.com
       - 1822br.com
-      - www.1822br.com
-      - www.voz777.cc
-      - k6bet6.com
-      - www.k6bet6.com
+      - 5588bet.cc
       - 5588bet3.com
-      - www.5588bet3.com
-      - www.uu7.bet
-      - m.uu7.bet
-      - www.8899bet.cc
-      - brazilbet777.com
-      - www.brazilbet777.com
-      - m.phoenix777slots.com
-      - ds.phoenix777slots.com
-      - mido777.com
-      - www.mido777.com
       - 60game.bet
-      - www.60game.bet
-      - m.corinthians777.com
-      - www.911jogo.vip
-      - pppkf.com
-      - www.pppkf.com
-      - www.euzzo.com
-      - euzzo.com
-      - fb588.com
-      - www.fb588.com
+      - 66brl.com
       - 777sug.win
-      - www.777sug.win
-      - www.brgames777.com
-      - m.brgames777.com
+      - bbrbet20.com
+      - best7778.com
+      - brazilbet777.com
       - brgames777.com
+      - ce818.com
+      - coroaaripg.com
+      - ds.phoenix777slots.com
+      - euzzo.com
+      - facebook.com
+      - fb588.com
+      - k6bet6.com
+      - lindapg.com
+      - m.brgames777.com
+      - m.corinthians777.com
+      - m.dragonhatch777.com
+      - m.novaslotsbet.com
+      - m.phoenix777slots.com
+      - m.uu7.bet
+      - mido777.com
+      - nn55.com
+      - novaslotsbet.com
+      - pppkf.com
+      - share.brazilbet777.com
+      - slot-pg-soft.prodevreal.co
+      - www.006.game
+      - www.1822br.com
+      - www.5588bet3.com
+      - www.60game.bet
+      - www.777sug.win
+      - www.8899bet.cc
+      - www.911jogo.vip
+      - www.brazilbet777.com
+      - www.brgames777.com
+      - www.euzzo.com
+      - www.fb588.com
+      - www.k6bet6.com
+      - www.mido777.com
+      - www.pppkf.com
+      - www.uu7.bet
+      - www.voz777.cc
       sources:
       - name: mullvad-dns-blocklists-lists-doh-gambling-hagezi-gambling
         url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/gambling/hagezi-gambling
