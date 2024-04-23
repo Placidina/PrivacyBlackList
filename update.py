@@ -278,7 +278,7 @@ def create_initial_file(src, blacklist: list = []):
                 merged.write(f.read().encode(ENCODING))
 
         if blacklist is not None:
-            merged.write("".join(blacklist).encode(ENCODING))
+            merged.write("\n".join(blacklist).encode(ENCODING))
 
         merged.seek(0)
         return merged
