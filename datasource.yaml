@@ -163,3 +163,9 @@ rules:
       sources:
       - name: mullvad-dns-blocklists-lists-doh-social-mullvad-social-blocklist
         url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/social/mullvad-social-blocklist
+    tiktok:
+      whitelist: []
+      blacklist: []
+      sources:
+      - name: blocklistproject-lists-tiktok
+        url: https://raw.githubusercontent.com/blocklistproject/Lists/master/tiktok.txt
