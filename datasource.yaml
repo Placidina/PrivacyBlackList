@@ -12,12 +12,16 @@ rules:
         url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/adblock/AdguardDNS
       - name: mullvad-dns-blocklists-lists-doh-adblock-frellwits-swedish-hosts-file
         url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/adblock/frellwits-swedish-hosts-file
-      - name: mullvad-dns-blocklists-lists-doh-adblock-oisd-small
-        url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/adblock/oisd-small
+      # TODO: UnicodeError: encoding with 'idna' codec failed (UnicodeError: label empty or too long)
+      # - name: mullvad-dns-blocklists-lists-doh-adblock-oisd-small
+      #   url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/adblock/oisd-small
     adult:
       whitelist: []
       blacklist: []
       sources: []
+      # TODO: UnicodeError: encoding with 'idna' codec failed (UnicodeError: label empty or too long)
+      # - name: mullvad-dns-blocklists-lists-doh-adult-oisd-nsfw
+      #   url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/adult/oisd-nsfw
     gambling:
       whitelist: []
       blacklist: []
