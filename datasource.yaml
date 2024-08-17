@@ -12,6 +12,8 @@ rules:
         url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/adblock/AdguardDNS
       - name: mullvad-dns-blocklists-lists-doh-adblock-frellwits-swedish-hosts-file
         url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/adblock/frellwits-swedish-hosts-file
+      - name: mullvad-dns-blocklists-lists-doh-adblock-oisd-small
+        url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/adblock/oisd-small
     adult:
       whitelist: []
       blacklist: []
@@ -30,22 +32,24 @@ rules:
         url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/firebog-easylist-privacy
       - name: mullvad-dns-blocklists-lists-doh-privacy-mullvad-tracker-blocklist
         url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/mullvad-tracker-blocklist
-      - name: mullvad-dns-blocklists-lists-doh-privacy-telemetry-alexa
-        url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/telemetry-alexa
-      - name: mullvad-dns-blocklists-lists-doh-privacy-telemetry-apple
-        url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/telemetry-apple
-      - name: mullvad-dns-blocklists-lists-doh-privacy-telemetry-huawei
-        url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/telemetry-huawei
-      - name: mullvad-dns-blocklists-lists-doh-privacy-telemetry-samsung
-        url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/telemetry-samsung
-      - name: mullvad-dns-blocklists-lists-doh-privacy-telemetry-sonos
-        url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/telemetry-sonos
-      - name: mullvad-dns-blocklists-lists-doh-privacy-telemetry-windows
-        url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/telemetry-windows
-      - name: mullvad-dns-blocklists-lists-doh-privacy-telemetry-xiaomi
-        url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/telemetry-xiaomi
-      - name: mullvad-dns-blocklists-lists-doh-privacy-windows-spy-blocker-spy
-        url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/windows-spy-blocker-spy
+      - name: mullvad-dns-blocklists-lists-doh-privacy-hagezi-tracker-amazon
+        url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/hagezi-tracker-amazon
+      - name: mullvad-dns-blocklists-lists-doh-privacy-hagezi-tracker-apple
+        url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/hagezi-tracker-apple
+      - name: mullvad-dns-blocklists-lists-doh-privacy-hagezi-tracker-huawei
+        url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/hagezi-tracker-huawei
+      - name: mullvad-dns-blocklists-lists-doh-privacy-hagezi-tracker-oppp
+        url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/hagezi-tracker-oppp
+      - name: mullvad-dns-blocklists-lists-doh-privacy-hagezi-tracker-tiktok-aggressive
+        url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/hagezi-tracker-tiktok-aggressive
+      - name: mullvad-dns-blocklists-lists-doh-privacy-hagezi-tracker-vivo
+        url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/hagezi-tracker-vivo
+      - name: mullvad-dns-blocklists-lists-doh-privacy-hagezi-tracker-webos
+        url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/hagezi-tracker-webos
+      - name: mullvad-dns-blocklists-lists-doh-privacy-hagezi-tracker-windows
+        url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/hagezi-tracker-windows
+      - name: mullvad-dns-blocklists-lists-doh-privacy-hagezi-tracker-xiamomi
+        url: https://raw.githubusercontent.com/mullvad/dns-blocklists/main/lists/doh/privacy/hagezi-tracker-xiamomi
     social:
       whitelist: []
       blacklist: []
